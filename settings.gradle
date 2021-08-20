@@ -1,0 +1,3 @@
+rootProject.name = "ExtensionCropML"
+include ':app'
+include ':extensioncrop_ml'
