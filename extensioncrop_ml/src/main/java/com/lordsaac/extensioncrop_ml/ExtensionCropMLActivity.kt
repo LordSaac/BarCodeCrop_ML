@@ -24,6 +24,7 @@ import com.lordsaac.extensioncrop_ml.Helpers.BundleKeys
 import com.lordsaac.extensioncrop_ml.Interfaces.ListenerBarcodes
 import com.lordsaac.extensioncrop_ml.Interfaces.ResponseExtenCropML
 import com.lordsaac.extensioncrop_ml.ML_Helpers.BarcodeProcess
+import com.lordsaac.extensioncrop_ml.Models.ExtensionCropML
 import com.lordsaac.extensioncrop_ml.Models.OptionsML
 import com.lordsaac.extensioncrop_ml.Models.Response
 import com.lordsaac.extensioncrop_ml.Models.Result
@@ -153,8 +154,8 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
     private fun openCamera(){
 
         val values = ContentValues()
-        values.put(MediaStore.Images.Media.TITLE, "New Picture")
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera")
+        values.put(MediaStore.Images.Media.TITLE, ExtensionCropML.OPTIONS_NEW_PICTURE)
+        values.put(MediaStore.Images.Media.DESCRIPTION, ExtensionCropML.OPTIONS_NEW_PICTURE_DESC)
         imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)!!
 
         val action = Intent("android.media.action.IMAGE_CAPTURE")
@@ -200,21 +201,20 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
 
     private fun openSelectCode(codes: Array<String>){
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle("Barcode Select")
 
-        builder.setTitle("Selección")
+        builder.setTitle(ExtensionCropML.OPTIONS_DIALOG_TITLE)
             .setMultiChoiceItems(codes, null,
                 OnMultiChoiceClickListener { dialog, item, isChecked ->
 
                     this.responseML.barcodes[item].selected = isChecked
 
                     Log.i(
-                        "Dialogos",
-                        "Opción elegida: " + codes.get(item)
+                        "Log",
+                        "selected options: " + codes.get(item)
                     )
                 })
 
-        builder.setPositiveButton("Aceptar",
+        builder.setPositiveButton("" + ExtensionCropML.OPTIONS_DIALOG_BUTTON_ACCEPT,
             DialogInterface.OnClickListener { dialog, which ->
                     anotherContext.responseListener(responseML)
                     this.finish()
@@ -233,6 +233,7 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
         this.responseML = response
 
         if(response.count > 0) {
+
             val values: ArrayList<String> = ArrayList()
 
             var index = 0
@@ -242,8 +243,15 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
                 index++
             }
 
-            val stringArray: Array<String> = values.toArray(arrayOfNulls<String>(values.size))
-            this.openSelectCode(stringArray)
+            if(!ExtensionCropML.OPTIONS_SELECTED_ALL){
+                val stringArray: Array<String> = values.toArray(arrayOfNulls<String>(values.size))
+                this.openSelectCode(stringArray)
+            }else{
+                anotherContext.responseListener(responseML)
+                this.finish()
+            }
+
+
         }else{
             // Bad Success or image not process
             anotherContext.responseListener(responseML)
