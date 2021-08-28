@@ -1,17 +1,61 @@
-# ExtensionCrop_ML
+<h1  align="left"> ExtensionCrop_ML </h1>
 Scan multiple barcode using Machine Learning.
 
 
 ## Configurations and implementations
 
 
-1.Add implementation in your class: ```ResponseExtenCropML```.
+1.Add implementation in your class: 
+```kotlin 
+ResponseExtenCropML
+
+```
 <br>
+
 2.Add function  ```responseListener```, this function you can using for listener response. 
+
+#### Example: 
+
+```kotlin
+
+    override fun responseListener(response: Response?) {
+            
+	    if(response!!.result.equals(Result.OK)){
+	       
+	       var concat: String = ""
+	       
+	        response!!.barcodes.forEach {
+                    if(it.selected){
+                        concat += "\n" + it.code
+                    }
+                }
+		
+		print(concat)
+		
+	    }else if(response!!.result.equals(Result.BAD_SUCCESS)){
+	    
+               print("Image not process for any error")
+	    
+            }else if(response!!.result.equals(Result.TIME_OUT)){
+	    
+	       print("Process time out. ")
+	       
+          }
+    }
+
+```
+
 <br>
 3.For start the action calling the next code:
+
 ```kotlin 
-ExtensionCropML.start(this,OptionsML.FORMAT_ALL_FORMATS)
+ 
+ fun onclick(view: View){
+      
+      ExtensionCropML.start(this,OptionsML.FORMAT_ALL_FORMATS)
+  
+  }
+
 ```
 
 ### * For more information you can see  complete code into the next link [Code](https://github.com/LordSaac/ExtensionCrop_ML/blob/master/app/src/main/java/com/lordsaac/extensioncropml/MainActivity.kt) 
