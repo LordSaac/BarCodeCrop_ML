@@ -27,6 +27,13 @@ class MainActivity : AppCompatActivity(), ResponseExtenCropML {
     }
 
     fun onclick(view: View){
+        
+        ExtensionCropML.OPTIONS_DIALOG_TITLE = "My dialog"
+        ExtensionCropML.OPTIONS_SELECTED_ALL = true
+        ExtensionCropML.OPTIONS_DIALOG_BUTTON_ACCEPT = "Please acept options"
+        ExtensionCropML.OPTIONS_NEW_PICTURE = "New barcode capture"
+        ExtensionCropML.OPTIONS_NEW_PICTURE_DESC = "Cut picture on barcode"
+        
         ExtensionCropML.start(this,OptionsML.FORMAT_ALL_FORMATS)
     }
 
