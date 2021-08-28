@@ -12,6 +12,12 @@ import java.io.Serializable;
 
 public class ExtensionCropML {
 
+    public static Boolean OPTIONS_SELECTED_ALL =  false;
+    public static String  OPTIONS_DIALOG_TITLE = "Selecting";
+    public static String  OPTIONS_DIALOG_BUTTON_ACCEPT = "Accept";
+    public static String  OPTIONS_NEW_PICTURE = "New Picture";
+    public static String  OPTIONS_NEW_PICTURE_DESC = "From your Camera";
+    
     public static void start(Context context, int options){
 
         OptionsML optionsML = new OptionsML();
