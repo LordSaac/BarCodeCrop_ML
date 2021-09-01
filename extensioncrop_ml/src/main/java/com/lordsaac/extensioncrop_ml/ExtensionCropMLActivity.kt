@@ -6,10 +6,10 @@ import android.content.DialogInterface
 import android.content.DialogInterface.OnMultiChoiceClickListener
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
@@ -27,11 +27,12 @@ import com.lordsaac.extensioncrop_ml.ML_Helpers.BarcodeProcess
 import com.lordsaac.extensioncrop_ml.Models.ExtensionCropML
 import com.lordsaac.extensioncrop_ml.Models.OptionsML
 import com.lordsaac.extensioncrop_ml.Models.Response
-import com.lordsaac.extensioncrop_ml.Models.Result
 import com.theartofdev.edmodo.cropper.CropImage
+import java.io.File
 import java.util.*
 
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
 
     private lateinit var imageUri: Uri
@@ -39,6 +40,7 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
     private val CAMERA_REQUEST_CODE = 100
     private val READ_EXTERNAL_STORAGE = 101
     private val WRITE_EXTERNAL_STORAGE = 102
+    private val ACCESS_FINE_LOCATION = 103
 
     private lateinit var optionsML : OptionsML
     private lateinit var responseML : Response
@@ -74,9 +76,33 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
         }
     }
 
-    /**
-     * @Actions listener
-     */
+    fun deleteUri(){
+        val fdelete = File(getFilePath(imageUri))
+
+        if (fdelete.exists()) {
+            if (fdelete.delete()) {
+                println("file Deleted :")
+            } else {
+                println("file not Deleted :")
+            }
+        }
+    }
+
+
+
+    //getting real path from uri
+    private fun getFilePath(uri: Uri): String? {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor: Cursor? = contentResolver.query(uri, projection, null, null, null)
+        if (cursor != null) {
+            cursor.moveToFirst()
+            val columnIndex: Int = cursor.getColumnIndex(projection[0])
+            val picturePath: String = cursor.getString(columnIndex) // returns null
+            cursor.close()
+            return picturePath
+        }
+        return null
+    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -99,6 +125,7 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
             }
         }else if(requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
 
+
             CropImage.activity(imageUri)
                     .setOutputUri(this.imageUri)
                     .start(this);
@@ -109,41 +136,57 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == CAMERA_REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show()
-                this.checkPermissionAndOpenCamera(Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)
-            }
 
-            else {
-                finish()
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show()
+        if(grantResults.count() > 0){
+            if (requestCode == CAMERA_REQUEST_CODE) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show()
+                    this.checkPermissionAndOpenCamera(Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)
+                }
+
+                else {
+                    finish()
+                    Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show()
+                }
+            }
+            else if (requestCode == READ_EXTERNAL_STORAGE) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show()
+                     this.checkPermissionAndOpenCamera(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+
+                }
+
+                else {
+                    finish()
+                    Toast.makeText(this, "Read External Storage permission denied", Toast.LENGTH_LONG).show()
+                }
+            }
+            else if (requestCode == WRITE_EXTERNAL_STORAGE) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show()
+                    this.openCamera()
+
+                }
+
+                else {
+                    finish()
+                    Toast.makeText(this, "Write External Storage permission denied", Toast.LENGTH_LONG).show()
+                }
+            }
+            else if (requestCode == ACCESS_FINE_LOCATION) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show()
+                    this.openCamera()
+
+                }
+
+                else {
+                    finish()
+                    Toast.makeText(this, "Write External Storage permission denied", Toast.LENGTH_LONG).show()
+                }
             }
         }
-        else if (requestCode == READ_EXTERNAL_STORAGE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show()
-                this.checkPermissionAndOpenCamera(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
 
-            }
-
-            else {
-                finish()
-                Toast.makeText(this, "Read External Storage permission denied", Toast.LENGTH_LONG).show()
-            }
-        }
-        else if (requestCode == WRITE_EXTERNAL_STORAGE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show()
-                this.openCamera()
-
-            }
-
-            else {
-                finish()
-                Toast.makeText(this, "Write External Storage permission denied", Toast.LENGTH_LONG).show()
-            }
-        }
     }
 
 
@@ -161,6 +204,7 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
         val action = Intent("android.media.action.IMAGE_CAPTURE")
 
         action.putExtra("android.intent.extras.CAMERA_FACING", 1)
+
         action.putExtra("android.intent.extras.FLASH_MODE_ON", 1)
         action.putExtra("android.intent.extras.QUALITY_HIGH", 1)
         action.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
@@ -231,6 +275,7 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
     override fun responseListener(response: Response) {
 
         this.responseML = response
+        this.deleteUri()
 
         if(response.count > 0) {
 
