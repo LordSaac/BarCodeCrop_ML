@@ -60,17 +60,12 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
 
     }
 
-
-
-
     fun  getPutExtraIntent() {
 
         val extras = intent.getBundleExtra(BundleKeys.PutExtraKey);
 
         if (extras != null) {
-
             val obj =  extras.get(BundleKeys.ExtensionMLKey) as OptionsML
-
             optionsML = obj
         }
     }
@@ -86,8 +81,6 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
             }
         }
     }
-
-
 
     //getting real path from uri
     private fun getFilePath(uri: Uri): String? {
@@ -183,7 +176,6 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
         }
 
     }
-
 
      /**
      * @Private Funtions

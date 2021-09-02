@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
+import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.lordsaac.*
@@ -27,9 +28,11 @@ class MainActivity : AppCompatActivity(), ResponseExtenCropML {
     }
 
     fun onclick(view: View){
-        
+
+        val toggle: Switch = findViewById(R.id.switch1)
+
         ExtensionCropML.OPTIONS_DIALOG_TITLE = "My dialog"
-        ExtensionCropML.OPTIONS_SELECTED_ALL = true
+        ExtensionCropML.OPTIONS_SELECTED_ALL = toggle.isChecked
         ExtensionCropML.OPTIONS_DIALOG_BUTTON_ACCEPT = "Please acept options"
         ExtensionCropML.OPTIONS_NEW_PICTURE = "New barcode capture"
         ExtensionCropML.OPTIONS_NEW_PICTURE_DESC = "Cut picture on barcode"
@@ -55,9 +58,11 @@ class MainActivity : AppCompatActivity(), ResponseExtenCropML {
                 var concat: String = ""
 
                 response!!.barcodes.forEach {
-                    // if(it.selected){ // OPTIONAL
+                      if(it.selected){ // OPTIONAL
                         concat += "\n" + it.code
-                    // }
+                     }else if(ExtensionCropML.OPTIONS_SELECTED_ALL){
+                          concat += "\n" + it.code
+                      }
                 }
 
                 textView.text = concat
