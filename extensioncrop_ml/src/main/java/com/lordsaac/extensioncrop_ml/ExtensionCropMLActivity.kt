@@ -13,7 +13,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -152,7 +151,13 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
             else if (requestCode == READ_EXTERNAL_STORAGE) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show()
-                     this.checkPermissionAndOpenCamera(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+
+                    if(this.checkPermissionAndOpenCamera(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)){
+                        this.openCamera()
+                    }else{
+                        this.checkPermissionAndOpenCamera(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                    }
+
 
                 }
 
@@ -163,6 +168,7 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
             }
             else if (requestCode == WRITE_EXTERNAL_STORAGE) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
                     Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show()
                     this.openCamera()
 
@@ -173,18 +179,7 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
                     Toast.makeText(this, "Write External Storage permission denied", Toast.LENGTH_LONG).show()
                 }
             }
-            else if (requestCode == ACCESS_FINE_LOCATION) {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show()
-                    this.openCamera()
 
-                }
-
-                else {
-                    finish()
-                    Toast.makeText(this, "Write External Storage permission denied", Toast.LENGTH_LONG).show()
-                }
-            }
         }
 
     }
@@ -209,12 +204,6 @@ class ExtensionCropMLActivity : AppCompatActivity(), ListenerBarcodes {
         action.putExtra("android.intent.extras.QUALITY_HIGH", 1)
         action.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
 
-        val previewRequest = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                    if (it.resultCode == RESULT_OK) {
-                        val list = it.data
-                        // do whatever with the data in the callback
-                    }
-                }
         startActivityForResult(action, CAMERA_REQUEST_CODE)
     }
 

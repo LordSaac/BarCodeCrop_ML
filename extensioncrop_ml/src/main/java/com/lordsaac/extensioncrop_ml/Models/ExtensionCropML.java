@@ -17,6 +17,7 @@ public class ExtensionCropML {
     public static String  OPTIONS_DIALOG_BUTTON_ACCEPT = "Accept";
     public static String  OPTIONS_NEW_PICTURE = "New Picture";
     public static String  OPTIONS_NEW_PICTURE_DESC = "From your Camera";
+
     
     public static void start(Context context, int options){
 
