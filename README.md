@@ -121,10 +121,8 @@ ResponseExtenCropML
 
 ```
     
-    dependencies {
-	    implementation 'com.github.LordSaac:ScannerBarCrop_ML:v1.0.0'
-	}
-    
+ implementation 'com.github.LordSaac:ScannerBarCrop_ML:v1.0.0'
+ 
 ```
 
 # Contribution
