@@ -3,6 +3,13 @@
 
 Scan image captured image and crop image for select specificate code or multiple codes.
 
+The base this library in two references: 
+
+* Procesing image using [ML Kit](https://developers.google.com/ml-kit/vision/barcode-scanning), for take codes on image. 
+* Crop image using [Android Image Cropper](https://github.com/ArthurHub/Android-Image-Cropper).  
+
+
+
 # Implementations 
 
 1.Add implementation in your class: 
