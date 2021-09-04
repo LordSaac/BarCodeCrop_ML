@@ -65,7 +65,7 @@ ResponseExtenCropML
 
 ```
 
-### * For more information you can see  complete code into the next link [Code](https://github.com/LordSaac/ExtensionCrop_ML/blob/master/app/src/main/java/com/lordsaac/extensioncropml/MainActivity.kt) 
+### * For more information you can see  complete code into the next link [Code](https://github.com/LordSaac/ExtensionCrop_ML/blob/master/app/src/main/java/com/lordsaac/extensioncropml/MainActivity.kt)  :star:
 
 
 ## Table Options
@@ -93,6 +93,15 @@ ResponseExtenCropML
     }
 
 ```
+
+## Example View:  
+
+<p align="center">
+
+|||
+|:----:|:----:|
+|<img  height="168" width="120" src="https://github.com/LordSaac/IGProgressLottie-Swift/blob/main/IGLottieProgress/img/Simulator%20Screen%20Shot%20-%20iPhone%20SE%20(2nd%20generation)%20-%202021-05-11%20at%2020.21.00.png">|<img  height="168" width="120" src="https://github.com/LordSaac/IGProgressLottie-Swift/blob/main/IGLottieProgress/img/Simulator%20Screen%20Shot%20-%20iPhone%20SE%20(2nd%20generation)%20-%202021-05-11%20at%2020.21.17.png">|
+</p>
 
 # Gradle Dependency
 
