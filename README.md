@@ -121,7 +121,7 @@ ResponseExtenCropML
 
 ```
     
- implementation 'com.github.LordSaac:ScannerBarCrop_ML:v1.0.0'
+     implementation 'com.github.LordSaac:BarCodeCrop_ML:v1.0.0'
  
 ```
 
