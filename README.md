@@ -1,9 +1,9 @@
-<h1  align="left"> ExtensionCrop_ML </h1>
-Scan multiple barcode using Machine Learning.
 
+# Description
 
-## Configurations and implementations
+Scan image captured image and crop image for select specificate code or multiple codes.
 
+# Implementations 
 
 1.Add implementation in your class: 
 ```kotlin 
