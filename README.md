@@ -111,7 +111,7 @@ ResponseExtenCropML
 
 	allprojects {
 		repositories {
-			...
+			
 			maven { url 'https://jitpack.io' }
 		}
 	}
@@ -122,7 +122,7 @@ ResponseExtenCropML
 ```
     
     dependencies {
-	        implementation 'com.github.LordSaac:ProgressLottieIGB:v1.0.2'
+	    implementation 'com.github.LordSaac:ScannerBarCrop_ML:v1.0.0'
 	}
     
 ```
